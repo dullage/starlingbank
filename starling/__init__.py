@@ -2,6 +2,7 @@ from requests import get
 
 BASE_URL = "https://api.starlingbank.com/api/v1"
 
+
 class AccountBalance():
 
     def __init__(self):
@@ -12,6 +13,7 @@ class AccountBalance():
         self.available_to_spend = None
         self.accepted_overdraft = None
         self.amount = None
+
 
 class StarlingAccount():
 
@@ -30,7 +32,8 @@ class StarlingAccount():
 
     def update_balance(self):
         """Get the latest balance information for the account."""
-        response = get(self._url("/accounts/balance"), headers = self._headers()).json()
+        response = get(self._url("/accounts/balance"), headers=self._headers())
+        response = response.json()
 
         self.balance.currency = response['currency']
         self.balance.cleared_balance = response['clearedBalance']
