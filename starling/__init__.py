@@ -40,10 +40,29 @@ class AccountBalance():
 
 class StarlingAccount():
 
+    def _get_account_data(self):
+        """Get basic information for the account."""
+        response = get(
+            _url("/accounts"),
+            headers=self._auth_headers
+        )
+        response = response.json()
+
+        self.id = response['id']
+        self.name = response['name']
+        self.number = response['number']
+        self.account_number = response['accountNumber']
+        self.sort_code = response['sortCode']
+        self.currency = response['currency']
+        self.iban = response['iban']
+        self.bic = response['bic']
+        self.created_at = response['createdAt']
+
     def __init__(self, api_token):
         self._api_token = api_token
         self._auth_headers = {
             "Authorization": "Bearer {0}".format(self._api_token)
         }
 
+        self._get_account_data()
         self.balance = AccountBalance(self)
