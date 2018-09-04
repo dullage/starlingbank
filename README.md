@@ -17,7 +17,7 @@ from starling import StarlingAccount
 my_account = StarlingAccount("<INSERT API TOKEN HERE>")
 
 # Update the objects account balance data:
-my_account.update_balance()
+my_account.balance.update()
 
 # Print account effective balance:
 print(my_account.balance.effective_balance)
