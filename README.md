@@ -1,5 +1,4 @@
 # python-starling
-**WORK IN PROGRESS**
 
 A python package that provides limited access to the Starling bank API.
 
@@ -11,8 +10,7 @@ A python package that provides limited access to the Starling bank API.
 ## Installation
 ```
 git clone https://github.com/Dullage/starling.git
-cd starling
-pip install .
+pip install ./starling
 ```
 
 ## Usage
