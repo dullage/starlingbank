@@ -8,7 +8,7 @@ def _url(endpoint):
     return "{0}{1}".format(BASE_URL, endpoint)
 
 
-class AccountBalance():
+class _AccountBalance():
 
     def __init__(self, starling_account):
         self._starling_account = starling_account
@@ -65,4 +65,4 @@ class StarlingAccount():
         }
 
         self._get_account_data()
-        self.balance = AccountBalance(self)
+        self.balance = _AccountBalance(self)
