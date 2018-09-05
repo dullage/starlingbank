@@ -8,6 +8,13 @@ A python package that provides limited access to the Starling bank API.
 * https://www.starlingbank.com/
 * https://developer.starlingbank.com/
 
+## Installation
+```
+git clone https://github.com/Dullage/starling.git
+cd starling
+pip install .
+```
+
 ## Usage
 ### Import the StarlingAccount class:
 ```
