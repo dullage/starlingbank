@@ -1,4 +1,4 @@
-# python-starling
+# starling
 
 A python package that provides limited access to the Starling bank API.
 
