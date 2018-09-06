@@ -1,5 +1,7 @@
 from requests import get
 
+__version__ = "1.0"
+
 BASE_URL = "https://api.starlingbank.com/api/v1"
 
 
