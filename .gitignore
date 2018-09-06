@@ -1,2 +1,4 @@
 *.pyc
 /.vscode
+/starlingbank.egg-info
+/dist

@@ -9,8 +9,7 @@ A python package that provides limited access to the Starling bank API.
 
 ## Installation
 ```
-git clone https://github.com/Dullage/starlingbank.git
-pip install ./starlingbank
+pip install starlingbank
 ```
 
 ## Usage
