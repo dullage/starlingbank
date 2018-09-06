@@ -1,9 +1,8 @@
 from setuptools import setup
-import starlingbank
 
 setup(
     name='starlingbank',
-    version=starlingbank.__version__,
+    version="1.1",
     description='A python package that provides limited access to the Starling bank API.',  # noqa
     url='https://github.com/Dullage/starlingbank',
     author='Adam Dullage',
