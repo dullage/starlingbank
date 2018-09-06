@@ -1,4 +1,4 @@
-# starling
+# starlingbank
 
 A python package that provides limited access to the Starling bank API.
 
@@ -9,14 +9,14 @@ A python package that provides limited access to the Starling bank API.
 
 ## Installation
 ```
-git clone https://github.com/Dullage/starling.git
-pip install ./starling
+git clone https://github.com/Dullage/starlingbank.git
+pip install ./starlingbank
 ```
 
 ## Usage
 ### Import the StarlingAccount class:
 ```
-from starling import StarlingAccount
+from starlingbank import StarlingAccount
 ```
 
 ### Create a StarlingAccount object:
