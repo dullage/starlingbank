@@ -22,6 +22,10 @@ from starlingbank import StarlingAccount
 ```
 my_account = StarlingAccount("<INSERT API TOKEN HERE>")
 ```
+If using a sandbox token:
+```
+my_account = StarlingAccount("<INSERT API TOKEN HERE>", sandbox=True)
+```
 
 ### Print account data:
 ```
