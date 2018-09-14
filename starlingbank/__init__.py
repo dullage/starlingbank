@@ -1,14 +1,16 @@
 """Provides limited access to the Starling bank API."""
-from requests import get
+from requests import get, put
+from uuid import uuid4
+from json import dumps as json_dumps
 
-__version__ = "1.2"
+__version__ = "2.0dev"
 
 BASE_URL = "https://api.starlingbank.com/api/v1"
 BASE_URL_SANDBOX = "https://api-sandbox.starlingbank.com/api/v1"
 
 
 def _url(endpoint, sandbox=False):
-    """Build a URL from the API's base URL."""
+    """Build a URL from the API's base URLs."""
     if sandbox is True:
         url = BASE_URL_SANDBOX
     else:
@@ -16,41 +18,91 @@ def _url(endpoint, sandbox=False):
     return "{0}{1}".format(url, endpoint)
 
 
-class _AccountBalance():
+class _SavingsGoal():
+    """Representation of a Savings Goal."""
 
-    def __init__(self, starling_account):
-        self._starling_account = starling_account
+    def __init__(self, auth_headers, sandbox):
+        self._auth_headers = auth_headers
+        self._sandbox = sandbox
 
-        self.currency = None
-        self.cleared_balance = None
-        self.effective_balance = None
-        self.pending_transactions = None
-        self.available_to_spend = None
-        self.accepted_overdraft = None
-        self.amount = None
+        self.uid = None
+        self.name = None
+        self.target_currency = None
+        self.target_minor_units = None
+        self.total_saved_currency = None
+        self.total_saved_minor_units = None
 
-    def update(self):
-        """Get the latest balance information for the account."""
-        response = get(
-            _url("/accounts/balance", self._starling_account._sandbox),
-            headers=self._starling_account._auth_headers
+    def update(self, goal=None):
+        """Update a single savings goals data."""
+        if goal is None:
+            endpoint = "/savings-goals/{0}".format(self.uid)
+
+            response = get(
+                _url(endpoint, self._sandbox),
+                headers=self._auth_headers
+            )
+            response.raise_for_status()
+            goal = response.json()
+
+        self.uid = goal.get('uid')
+        self.name = goal.get('name')
+
+        target = goal.get('target', {})
+        self.target_currency = target.get('currency')
+        self.target_minor_units = target.get('minorUnits')
+
+        total_saved = goal.get('totalSaved', {})
+        self.total_saved_currency = total_saved.get('currency')
+        self.total_saved_minor_units = total_saved.get('minorUnits')
+
+    def deposit(self, deposit_minor_units):
+        """Add funds to a savings goal."""
+        endpoint = "/savings-goals/{0}/add-money/{1}".format(self.uid, uuid4())
+
+        body = {
+            "amount": {
+                "currency": self.total_saved_currency,
+                "minorUnits": deposit_minor_units
+            }
+        }
+
+        response = put(
+            _url(endpoint, self._sandbox),
+            headers=self._auth_headers,
+            data=json_dumps(body)
         )
         response.raise_for_status()
 
-        response = response.json()
-        self.currency = response.get('currency')
-        self.cleared_balance = response.get('clearedBalance')
-        self.effective_balance = response.get('effectiveBalance')
-        self.pending_transactions = response.get('pendingTransactions')
-        self.available_to_spend = response.get('availableToSpend')
-        self.accepted_overdraft = response.get('acceptedOverdraft')
-        self.amount = response.get('amount')
+        self.update()
+
+    def withdraw(self, withdraw_minor_units):
+        """Withdraw funds from a savings goal."""
+        endpoint = "/savings-goals/{0}/withdraw-money/{1}".format(
+            self.uid,
+            uuid4()
+        )
+
+        body = {
+            "amount": {
+                "currency": self.total_saved_currency,
+                "minorUnits": withdraw_minor_units
+            }
+        }
+
+        response = put(
+            _url(endpoint, self._sandbox),
+            headers=self._auth_headers,
+            data=json_dumps(body)
+        )
+        response.raise_for_status()
+
+        self.update()
 
 
 class StarlingAccount():
     """Representation of a Starling Account."""
 
-    def _get_account_data(self):
+    def get_account_data(self):
         """Get basic information for the account."""
         response = get(
             _url("/accounts", self._sandbox),
@@ -61,7 +113,6 @@ class StarlingAccount():
         response = response.json()
         self.id = response.get('id')
         self.name = response.get('name')
-        self.number = response.get('number')
         self.account_number = response.get('accountNumber')
         self.sort_code = response.get('sortCode')
         self.currency = response.get('currency')
@@ -69,12 +120,80 @@ class StarlingAccount():
         self.bic = response.get('bic')
         self.created_at = response.get('createdAt')
 
+    def get_balance_data(self):
+        """Get the latest balance information for the account."""
+        response = get(
+            _url("/accounts/balance", self._sandbox),
+            headers=self._auth_headers
+        )
+        response.raise_for_status()
+
+        response = response.json()
+        self.currency = response.get('currency')
+        self.cleared_balance = response.get('clearedBalance')
+        self.effective_balance = response.get('effectiveBalance')
+        self.pending_transactions = response.get('pendingTransactions')
+        self.available_to_spend = response.get('availableToSpend')
+        self.accepted_overdraft = response.get('acceptedOverdraft')
+
+    def get_savings_goal_data(self):
+        """Get the latest savings goal information for the account."""
+        response = get(
+            _url("/savings-goals", self._sandbox),
+            headers=self._auth_headers
+        )
+        response.raise_for_status()
+
+        response = response.json()
+        response_savings_goals = response.get('savingsGoalList', {})
+
+        returned_uids = []
+
+        # New / Update
+        for goal in response_savings_goals:
+            uid = goal.get('uid')
+            returned_uids.append(uid)
+
+            # Intiialise new _SavingsGoal object if new
+            if uid not in self.savings_goals:
+                self.savings_goals[uid] = _SavingsGoal(
+                    self._auth_headers,
+                    self._sandbox
+                )
+
+            self.savings_goals[uid].update(goal)
+
+        # Forget about savings goals if the UID isn't returned by Starling
+        for uid in list(self.savings_goals):
+            if uid not in returned_uids:
+                self.savings_goals.pop(uid)
+
     def __init__(self, api_token, sandbox=False):
+        """Call to initialise a StarlingAccount object."""
         self._api_token = api_token
         self._sandbox = sandbox
         self._auth_headers = {
-            "Authorization": "Bearer {0}".format(self._api_token)
+            "Authorization": "Bearer {0}".format(self._api_token),
+            "Content-Type": "application/json"
         }
 
-        self._get_account_data()
-        self.balance = _AccountBalance(self)
+        # Account Data
+        self.id = None
+        self.name = None
+        self.account_number = None
+        self.sort_code = None
+        self.currency = None
+        self.iban = None
+        self.bic = None
+        self.created_at = None
+
+        # Balance Data
+        self.currency = None
+        self.cleared_balance = None
+        self.effective_balance = None
+        self.pending_transactions = None
+        self.available_to_spend = None
+        self.accepted_overdraft = None
+
+        # Savings Goals Data
+        self.savings_goals = {}

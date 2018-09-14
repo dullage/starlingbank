@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='starlingbank',
-    version="1.2",
+    version="2.0dev",
     description='A python package that provides limited access to the Starling bank API.',  # noqa
     url='https://github.com/Dullage/starlingbank',
     author='Adam Dullage',
@@ -10,6 +10,8 @@ setup(
     license='MIT',
     packages=['starlingbank'],
     install_requires=[
-        'requests'
+        'requests',
+        'uuid',
+        'json'
     ],
 )
