@@ -10,8 +10,6 @@ setup(
     license='MIT',
     packages=['starlingbank'],
     install_requires=[
-        'requests',
-        'uuid',
-        'json'
+        'requests'
     ],
 )
