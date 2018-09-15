@@ -2,6 +2,7 @@
 from requests import get, put
 from uuid import uuid4
 from json import dumps as json_dumps
+from base64 import b64decode
 
 __version__ = "2.0dev"
 
@@ -97,6 +98,25 @@ class SavingsGoal():
         response.raise_for_status()
 
         self.update()
+
+    def get_image(self, filename=None):
+        """Download the photo associated with a Savings Goal."""
+        if filename is None:
+            filename = "{0}.png".format(self.name)
+
+        endpoint = "/savings-goals/{0}/photo".format(
+            self.uid
+        )
+
+        response = get(
+            _url(endpoint, self._sandbox),
+            headers=self._auth_headers
+        )
+        response.raise_for_status()
+
+        base64_image = response.json()['base64EncodedPhoto']
+        with open(filename, 'wb') as file:
+            file.write(b64decode(base64_image))
 
 
 class StarlingAccount():

@@ -2,6 +2,20 @@
 
 A python package that provides limited access to the Starling bank API.
 
+* [Links](#Links)
+* [Installation](#Installation)
+* [Usage](#Usage)
+  * [Import](#Import)
+  * [Initialisation](#Initialisation)
+  * [Data](#Data)
+    * [Basic Account Data](#Basic%20Account%20Data)
+    * [Balance Data](#Balance%20Data)
+    * [Savings Goal Data](#Savings%20Goal%20Data)
+  * [Update a Single Savings Goal](#Update%20a%20Single%20Savings%20Goal)
+  * [Add to / withdraw from a Savings Goal](#Add%20to%20%2F%20withdraw%20from%20a%20Savings%20Goal)
+  * [Download a Savings Goal Image](#Download%20a%20Savings%20Goal%20Image)
+
+
 ## Links
 
 * https://www.starlingbank.com/
@@ -13,12 +27,12 @@ pip install starlingbank
 ```
 
 ## Usage
-### Import the StarlingAccount Class:
+### Import
 ```python
 from starlingbank import StarlingAccount
 ```
 
-### Create a StarlingAccount Object:
+### Initialisation
 ```python
 my_account = StarlingAccount("<INSERT API TOKEN HERE>")
 ```
@@ -27,7 +41,7 @@ If using a sandbox token:
 my_account = StarlingAccount("<INSERT API TOKEN HERE>", sandbox=True)
 ```
 
-### Get Data
+### Data
 3 data sets are currently supported:
 
 1. Basic Account Data
@@ -118,3 +132,10 @@ my_account.savings_goals['c8553fd8-8260-65a6-885a-e0cb45691512'].withdraw(1000)
 ```
 
 _Note: Both methods above will call an update after the transfer so that the local total_saved value is correct._
+
+### Download a Savings Goal Image
+You can download the image associated with a savings goal to file with the following method:
+```python
+my_account.savings_goals['c8553fd8-8260-65a6-885a-e0cb45691512'].get_image('<YOUR CHOSEN FILENAME>.png')
+```
+_Note: If the filename is ommitted the name of the goal will be used. You can optionally specify a full path alongside the filename if required._
