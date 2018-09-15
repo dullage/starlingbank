@@ -3,6 +3,7 @@ from requests import get, put
 from uuid import uuid4
 from json import dumps as json_dumps
 from base64 import b64decode
+from typing import Dict
 
 __version__ = "2.0dev"
 
@@ -10,7 +11,7 @@ BASE_URL = "https://api.starlingbank.com/api/v1"
 BASE_URL_SANDBOX = "https://api-sandbox.starlingbank.com/api/v1"
 
 
-def _url(endpoint, sandbox=False):
+def _url(endpoint: str, sandbox: bool=False) -> str:
     """Build a URL from the API's base URLs."""
     if sandbox is True:
         url = BASE_URL_SANDBOX
@@ -22,7 +23,7 @@ def _url(endpoint, sandbox=False):
 class SavingsGoal():
     """Representation of a Savings Goal."""
 
-    def __init__(self, auth_headers, sandbox):
+    def __init__(self, auth_headers: Dict, sandbox: bool) -> None:
         self._auth_headers = auth_headers
         self._sandbox = sandbox
 
@@ -33,7 +34,7 @@ class SavingsGoal():
         self.total_saved_currency = None
         self.total_saved_minor_units = None
 
-    def update(self, goal=None):
+    def update(self, goal: Dict=None) -> None:
         """Update a single savings goals data."""
         if goal is None:
             endpoint = "/savings-goals/{0}".format(self.uid)
@@ -56,7 +57,7 @@ class SavingsGoal():
         self.total_saved_currency = total_saved.get('currency')
         self.total_saved_minor_units = total_saved.get('minorUnits')
 
-    def deposit(self, deposit_minor_units):
+    def deposit(self, deposit_minor_units: int) -> None:
         """Add funds to a savings goal."""
         endpoint = "/savings-goals/{0}/add-money/{1}".format(self.uid, uuid4())
 
@@ -76,7 +77,7 @@ class SavingsGoal():
 
         self.update()
 
-    def withdraw(self, withdraw_minor_units):
+    def withdraw(self, withdraw_minor_units: int) -> None:
         """Withdraw funds from a savings goal."""
         endpoint = "/savings-goals/{0}/withdraw-money/{1}".format(
             self.uid,
@@ -99,7 +100,7 @@ class SavingsGoal():
 
         self.update()
 
-    def get_image(self, filename=None):
+    def get_image(self, filename: str=None) -> None:
         """Download the photo associated with a Savings Goal."""
         if filename is None:
             filename = "{0}.png".format(self.name)
@@ -122,7 +123,7 @@ class SavingsGoal():
 class StarlingAccount():
     """Representation of a Starling Account."""
 
-    def update_account_data(self):
+    def update_account_data(self) -> None:
         """Get basic information for the account."""
         response = get(
             _url("/accounts", self._sandbox),
@@ -140,7 +141,7 @@ class StarlingAccount():
         self.bic = response.get('bic')
         self.created_at = response.get('createdAt')
 
-    def update_balance_data(self):
+    def update_balance_data(self) -> None:
         """Get the latest balance information for the account."""
         response = get(
             _url("/accounts/balance", self._sandbox),
@@ -156,7 +157,7 @@ class StarlingAccount():
         self.available_to_spend = response.get('availableToSpend')
         self.accepted_overdraft = response.get('acceptedOverdraft')
 
-    def update_savings_goal_data(self):
+    def update_savings_goal_data(self) -> None:
         """Get the latest savings goal information for the account."""
         response = get(
             _url("/savings-goals", self._sandbox),
@@ -188,7 +189,7 @@ class StarlingAccount():
             if uid not in returned_uids:
                 self.savings_goals.pop(uid)
 
-    def __init__(self, api_token, sandbox=False):
+    def __init__(self, api_token: str, sandbox: bool=False) -> None:
         """Call to initialise a StarlingAccount object."""
         self._api_token = api_token
         self._sandbox = sandbox
@@ -216,4 +217,4 @@ class StarlingAccount():
         self.accepted_overdraft = None
 
         # Savings Goals Data
-        self.savings_goals = {}
+        self.savings_goals: Dict[str: SavingsGoal] = {}
