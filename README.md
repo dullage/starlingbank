@@ -2,18 +2,18 @@
 
 A python package that provides limited access to the Starling bank API.
 
-* [Links](#Links)
-* [Installation](#Installation)
-* [Usage](#Usage)
-  * [Import](#Import)
-  * [Initialisation](#Initialisation)
-  * [Data](#Data)
-    * [Basic Account Data](#Basic%20Account%20Data)
-    * [Balance Data](#Balance%20Data)
-    * [Savings Goal Data](#Savings%20Goal%20Data)
-  * [Update a Single Savings Goal](#Update%20a%20Single%20Savings%20Goal)
-  * [Add to / withdraw from a Savings Goal](#Add%20to%20%2F%20withdraw%20from%20a%20Savings%20Goal)
-  * [Download a Savings Goal Image](#Download%20a%20Savings%20Goal%20Image)
+* [Links](#links)
+* [Installation](#installation)
+* [Usage](#usage)
+  * [Import](#import)
+  * [Initialisation](#initialisation)
+  * [Data](#data)
+    * [Basic Account Data](#basic%20account%20data)
+    * [Balance Data](#balance%20data)
+    * [Savings Goal Data](#savings%20goal%20data)
+  * [Update a Single Savings Goal](#update%20a%20single%20savings%20goal)
+  * [Add to / withdraw from a Savings Goal](#add%20to%20%2F%20withdraw%20from%20a%20savings%20goal)
+  * [Download a Savings Goal Image](#download%20a%20savings%20goal%20image)
 
 
 ## Links
