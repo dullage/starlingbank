@@ -37,9 +37,9 @@ my_account = StarlingAccount("<INSERT API TOKEN HERE>", sandbox=True)
 To save on wasted API calls no data is collected when you initialise a StarlingAccount. You have to request / refresh each set of data as required with the following commands:
 
 ```python
-my_account.get_account_data()
-my_account.get_balance_data()
-my_account.get_savings_goal_data()
+my_account.update_account_data()
+my_account.update_balance_data()
+my_account.update_savings_goal_data()
 ```
 
 #### Basic Account Data
@@ -100,14 +100,21 @@ Example:
 print(my_account.savings_goals['c8553fd8-8260-65a6-885a-e0cb45691512'].total_saved_minor_units)
 ```
 
-### Add to Savings Goal
+### Update a Single Savings Goal
+The `update_savings_goal_data()` method will update all savings goals but you can also update them individually with the following method:
+```python
+my_account.savings_goals['c8553fd8-8260-65a6-885a-e0cb45691512'].update()
+```
+
+### Add to / withdraw from a Savings Goal
 You can add funds to a savings goal with the followng method:
 ```python
 my_account.savings_goals['c8553fd8-8260-65a6-885a-e0cb45691512'].deposit(1000)
 ```
 
-### Withdraw from a Savings Goal
 You can add funds to a savings goal with the followng method:
 ```python
 my_account.savings_goals['c8553fd8-8260-65a6-885a-e0cb45691512'].withdraw(1000)
 ```
+
+_Note: Both methods above will call an update after the transfer so that the local total_saved value is correct._

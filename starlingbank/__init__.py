@@ -18,7 +18,7 @@ def _url(endpoint, sandbox=False):
     return "{0}{1}".format(url, endpoint)
 
 
-class _SavingsGoal():
+class SavingsGoal():
     """Representation of a Savings Goal."""
 
     def __init__(self, auth_headers, sandbox):
@@ -102,7 +102,7 @@ class _SavingsGoal():
 class StarlingAccount():
     """Representation of a Starling Account."""
 
-    def get_account_data(self):
+    def update_account_data(self):
         """Get basic information for the account."""
         response = get(
             _url("/accounts", self._sandbox),
@@ -120,7 +120,7 @@ class StarlingAccount():
         self.bic = response.get('bic')
         self.created_at = response.get('createdAt')
 
-    def get_balance_data(self):
+    def update_balance_data(self):
         """Get the latest balance information for the account."""
         response = get(
             _url("/accounts/balance", self._sandbox),
@@ -136,7 +136,7 @@ class StarlingAccount():
         self.available_to_spend = response.get('availableToSpend')
         self.accepted_overdraft = response.get('acceptedOverdraft')
 
-    def get_savings_goal_data(self):
+    def update_savings_goal_data(self):
         """Get the latest savings goal information for the account."""
         response = get(
             _url("/savings-goals", self._sandbox),
@@ -156,7 +156,7 @@ class StarlingAccount():
 
             # Intiialise new _SavingsGoal object if new
             if uid not in self.savings_goals:
-                self.savings_goals[uid] = _SavingsGoal(
+                self.savings_goals[uid] = SavingsGoal(
                     self._auth_headers,
                     self._sandbox
                 )
