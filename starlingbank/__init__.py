@@ -5,8 +5,6 @@ from json import dumps as json_dumps
 from base64 import b64decode
 from typing import Dict
 
-__version__ = "2.0dev"
-
 BASE_URL = "https://api.starlingbank.com/api/v1"
 BASE_URL_SANDBOX = "https://api-sandbox.starlingbank.com/api/v1"
 
