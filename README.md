@@ -40,6 +40,10 @@ If using a sandbox token:
 ```python
 my_account = StarlingAccount("<INSERT API TOKEN HERE>", sandbox=True)
 ```
+By default, to save on wasted API calls no data is collected when you initialise a StarlingAccount. To optionally update all data on initialisation use the following:
+```python
+my_account = StarlingAccount("<INSERT API TOKEN HERE>", update=True)
+```
 
 ### Data
 3 data sets are currently supported:
@@ -48,7 +52,7 @@ my_account = StarlingAccount("<INSERT API TOKEN HERE>", sandbox=True)
 2. Balance Data
 3. Savings Goal Data
 
-To save on wasted API calls no data is collected when you initialise a StarlingAccount. You have to request / refresh each set of data as required with the following commands:
+ You have to request / refresh each set of data as required with the following commands:
 
 ```python
 my_account.update_account_data()

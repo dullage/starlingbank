@@ -189,7 +189,12 @@ class StarlingAccount():
             if uid not in returned_uids:
                 self.savings_goals.pop(uid)
 
-    def __init__(self, api_token: str, sandbox: bool=False) -> None:
+    def __init__(
+            self,
+            api_token: str,
+            update: bool=False,
+            sandbox: bool=False
+            ) -> None:
         """Call to initialise a StarlingAccount object."""
         self._api_token = api_token
         self._sandbox = sandbox
@@ -218,3 +223,8 @@ class StarlingAccount():
 
         # Savings Goals Data
         self.savings_goals: Dict[str: SavingsGoal] = {}
+
+        if update:
+            self.update_account_data()
+            self.update_balance_data()
+            self.update_savings_goal_data()
