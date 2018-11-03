@@ -1,6 +1,6 @@
 # starlingbank
 
-A python package that provides limited access to the Starling bank API.
+An **unofficial** python package that provides access to parts of the Starling bank API.
 
 * [Links](#links)
 * [Installation](#installation)
