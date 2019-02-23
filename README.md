@@ -1,7 +1,8 @@
 # starlingbank
 
-An **unofficial** python package that provides access to parts of the Starling bank API.
+An **unofficial** python package that provides access to parts of the Starling bank API. Designed to be used for personal use (i.e. using personal access tokens).
 
+* [Change Log](#change-log)
 * [Links](#links)
 * [Installation](#installation)
 * [Usage](#usage)
@@ -16,6 +17,15 @@ An **unofficial** python package that provides access to parts of the Starling b
   * [Download a Savings Goal Image](#download-a-savings-goal-image)
 
 
+## Change Log
+31/12/2018
+* Updated to use v2 API.
+* `currency` is no longer a property of the balance data.
+* `id` and `name` are no longer properties of the account data.
+* `account_number` is now `account_identifier`.
+* `sort_code` is now `bank_identifier`.
+* An API call is now made when initialising a StarlingAccount instance, even with `update=False`. This is to get the minimum data needed to start working with an account.
+
 ## Links
 
 * https://www.starlingbank.com/
@@ -27,6 +37,16 @@ pip install starlingbank
 ```
 
 ## Usage
+### API Key Scope Requirements
+To use all of the functionality this package affords, the following API scopes are required:
+
+* account:read
+* account-identifier:read
+* balance:read
+* savings-goal:read
+* savings-goal-transfer:read
+* savings-goal-transfer:create
+
 ### Import
 ```python
 from starlingbank import StarlingAccount
@@ -40,7 +60,7 @@ If using a sandbox token:
 ```python
 my_account = StarlingAccount("<INSERT API TOKEN HERE>", sandbox=True)
 ```
-By default, to save on wasted API calls no data is collected when you initialise a StarlingAccount. To optionally update all data on initialisation use the following:
+By default, to save on wasted API calls only minimal data is collected when you initialise a StarlingAccount. To optionally update all data on initialisation use the following:
 ```python
 my_account = StarlingAccount("<INSERT API TOKEN HERE>", update=True)
 ```
@@ -63,11 +83,8 @@ my_account.update_savings_goal_data()
 #### Basic Account Data
 Properties:
 
-* id
-* name
-* number
-* account_number
-* sort_code
+* account_identifier
+* bank_identifier
 * currency
 * iban
 * bic
@@ -75,13 +92,12 @@ Properties:
 
 Example:
 ```python
-print(my_account.account_number)
+print(my_account.account_identifier)
 ```
 
 #### Balance Data
 Properties:
 
-* currency
 * cleared_balance
 * effective_balance
 * pending_transactions

@@ -2,3 +2,4 @@
 /.vscode
 /starlingbank.egg-info
 /dist
+test.py
