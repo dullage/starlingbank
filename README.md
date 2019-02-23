@@ -18,7 +18,7 @@ An **unofficial** python package that provides access to parts of the Starling b
 
 
 ## Change Log
-31/12/2018
+23/02/2018
 * Updated to use v2 API.
 * `currency` is no longer a property of the balance data.
 * `id` and `name` are no longer properties of the account data.
