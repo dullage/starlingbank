@@ -251,7 +251,7 @@ class StarlingAccount():
         self.accepted_overdraft = None
 
         # Savings Goals Data
-        self.savings_goals: Dict[str: SavingsGoal] = {}
+        self.savings_goals = {}  # type: Dict[str, SavingsGoal]
 
         if update:
             self.update_account_data()
