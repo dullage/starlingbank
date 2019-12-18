@@ -1,3 +1,5 @@
+![PyPI](https://img.shields.io/pypi/v/starlingbank.svg)
+
 # starlingbank
 
 An **unofficial** python package that provides access to parts of the Starling bank API. Designed to be used for personal use (i.e. using personal access tokens).
@@ -18,6 +20,9 @@ An **unofficial** python package that provides access to parts of the Starling b
 
 
 ## Change Log
+18/12/2019
+* Removed available_to_spend property as this is no longer supported by the API.
+
 23/02/2018
 * Updated to use v2 API.
 * `currency` is no longer a property of the balance data.
@@ -101,7 +106,6 @@ Properties:
 * cleared_balance
 * effective_balance
 * pending_transactions
-* available_to_spend
 * accepted_overdraft
 
 Example:

@@ -166,7 +166,6 @@ class StarlingAccount():
         self.effective_balance = response['effectiveBalance']['minorUnits']
         self.pending_transactions \
             = response['pendingTransactions']['minorUnits']
-        self.available_to_spend = response['availableToSpend']['minorUnits']
         self.accepted_overdraft = response['acceptedOverdraft']['minorUnits']
 
     def update_savings_goal_data(self) -> None:
@@ -247,7 +246,6 @@ class StarlingAccount():
         self.cleared_balance = None
         self.effective_balance = None
         self.pending_transactions = None
-        self.available_to_spend = None
         self.accepted_overdraft = None
 
         # Savings Goals Data
