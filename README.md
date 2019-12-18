@@ -21,7 +21,7 @@ An **unofficial** python package that provides access to parts of the Starling b
 
 ## Change Log
 18/12/2019
-* Removed available_to_spend property as this is no longer supported by the API.
+* Removed `available_to_spend` property as this is no longer supported by the API.
 
 23/02/2018
 * Updated to use v2 API.
